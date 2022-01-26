@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { FormControl } from '@angular/forms';
 
@@ -32,14 +32,18 @@ export class WebsocketComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.eventsSubscription = this.websocket.events$.subscribe((data) => {
-      this.leftMessageStack.push({
-        time: new Date(),
-        message: data
+    this.eventsSubscription = this.websocket.events$
+      .pipe(
+        filter((eventData) => eventData.event === this.eventName)
+      )
+      .subscribe((eventData) => {
+        this.leftMessageStack.push({
+          time: new Date(),
+          message: eventData.data
+        })
+        const messageBoxElm = this._el.querySelector('.message-box') as HTMLElement
+        messageBoxElm.scrollTop = messageBoxElm?.scrollHeight
       })
-      const messageBoxElm = this._el.querySelector('.message-box') as HTMLElement
-      messageBoxElm.scrollTop = messageBoxElm?.scrollHeight
-    })
     this.isConnectSubscription = this.websocket.isConnect$.subscribe((connectionState) => {
       this.isConnected = connectionState
     })

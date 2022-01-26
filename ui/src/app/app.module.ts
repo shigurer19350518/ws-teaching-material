@@ -4,11 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { WebsocketComponent } from './components/websocket/websocket.component';
+import { PokemonComponent } from './components/pokemon/pokemon.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WebsocketComponent
+    WebsocketComponent,
+    PokemonComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,15 @@
+<div class="box-wrap">
+  <p>ポケモン紹介</p>
+  <div *ngIf="pokemonData; else elseBlock" class="pokemon-box">
+    <div class="pokemon-box-left">
+      <p>図鑑No：{{pokemonData.pokeNo}}</p>
+      <p>名前：{{pokemonData.name}}</p>
+    </div>
+    <div class="pokemon-box-right">
+      <img [src]="pokemonData.form_image">
+    </div>
+  </div>
+  <ng-template #elseBlock>
+    <p>まだ準備中じゃ</p>
+  </ng-template>
+</div>

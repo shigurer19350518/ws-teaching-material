@@ -8,7 +8,10 @@ import { io } from 'socket.io-client';
 export class WebsocketService<T = any> {
 
   private ioClient = io('http://localhost:3000')
-  private eventsSubject: Subject<T> = new Subject()
+  private eventsSubject: Subject<{
+    event: string,
+    data: T
+  }> = new Subject()
   private isConnectSubject = new BehaviorSubject(false);
 
   constructor(){
@@ -31,7 +34,10 @@ export class WebsocketService<T = any> {
 
   startSubscribeData(eventName: string) {
     this.ioClient.on(eventName, (data) => {
-      this.eventsSubject.next(data)
+      this.eventsSubject.next({
+        event: eventName,
+        data: data
+      })
     })
   }
 
