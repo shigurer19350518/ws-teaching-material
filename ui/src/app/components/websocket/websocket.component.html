@@ -5,13 +5,13 @@
       <div class="message-box">
         <div class="left-box">
           <div class="left-message-box">
-            <ng-container *ngFor="let rightMessage of rightMessageStack">
+            <ng-container *ngFor="let leftMessage of leftMessageStack">
               <div class="left-message-row">
                 <div class="left-message">
-                  {{rightMessage.message}}
+                  {{leftMessage.message}}
                 </div>
                 <div class="left-message-time">
-                  {{rightMessage.time | date:"yyyy/MM/dd HH:mm:ss"}}
+                  {{leftMessage.time | date:"yyyy/MM/dd HH:mm:ss"}}
                 </div>
               </div>
             </ng-container>
