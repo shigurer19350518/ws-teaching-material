@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { FormControl } from '@angular/forms';
@@ -15,21 +15,31 @@ export type MessageObject = {
 })
 export class WebsocketComponent implements OnInit, OnDestroy {
 
+  private eventName = 'chatMessage'
   private eventsSubscription?: Subscription;
   private isConnectSubscription?: Subscription;
   isConnected = false
   contentForm = new FormControl('')
   rightMessageStack: MessageObject[] = []
   leftMessageStack: MessageObject[] = []
+  private _el: HTMLElement;
 
   constructor(
-    private readonly websocket: WebsocketService
-  ) { }
+    private readonly websocket: WebsocketService<string>,
+    el: ElementRef
+  ) {
+    this._el = el.nativeElement;
+  }
 
   ngOnInit(): void {
     this.websocket.init()
     this.eventsSubscription = this.websocket.events$.subscribe((data) => {
-      console.log(data)
+      this.leftMessageStack.push({
+        time: new Date(),
+        message: data
+      })
+      const messageBoxElm = this._el.querySelector('.message-box') as HTMLElement
+      messageBoxElm.scrollTop = messageBoxElm?.scrollHeight
     })
     this.isConnectSubscription = this.websocket.isConnect$.subscribe((connectionState) => {
       this.isConnected = connectionState
@@ -43,7 +53,7 @@ export class WebsocketComponent implements OnInit, OnDestroy {
   }
 
   private startSubscribe() {
-    this.websocket.startSubscribeData()
+    this.websocket.startSubscribeData(this.eventName)
   }
 
   onSendMessage() {
@@ -51,6 +61,7 @@ export class WebsocketComponent implements OnInit, OnDestroy {
       time: new Date(),
       message: this.contentForm.value
     })
+    this.websocket.emit(this.eventName, this.contentForm.value)
     this.contentForm.setValue('')
   }
 

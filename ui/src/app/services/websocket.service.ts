@@ -5,10 +5,10 @@ import { io } from 'socket.io-client';
 @Injectable({
   providedIn: 'root'
 })
-export class WebsocketService {
+export class WebsocketService<T = any> {
 
   private ioClient = io('http://localhost:3000')
-  private eventsSubject: Subject<any> = new Subject()
+  private eventsSubject: Subject<T> = new Subject()
   private isConnectSubject = new BehaviorSubject(false);
 
   get events$() {
@@ -25,8 +25,8 @@ export class WebsocketService {
     })
   }
 
-  startSubscribeData() {
-    this.ioClient.on('events', (data) => {
+  startSubscribeData(eventName: string) {
+    this.ioClient.on(eventName, (data) => {
       this.eventsSubject.next(data)
     })
   }
@@ -36,8 +36,8 @@ export class WebsocketService {
     this.isConnectSubject.next(false)
   }
 
-  emit(data: any) {
-    this.ioClient.emit('events', data)
+  emit(eventName: string, data: any) {
+    this.ioClient.emit(eventName, data)
   }
 
 }
