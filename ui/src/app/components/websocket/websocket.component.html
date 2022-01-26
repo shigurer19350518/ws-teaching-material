@@ -1,0 +1,43 @@
+<div class="box-wrap">
+  <p>🦜🦜🦜🦜🦜🦜🦜🦜おうむ返しメッセージャ🦜🦜🦜🦜🦜🦜🦜🦜🦜</p>
+  <div class="chat-box">
+    <div class="message-box-wrap">
+      <div class="message-box">
+        <div class="left-box">
+          <div class="left-message-box">
+            <ng-container *ngFor="let rightMessage of rightMessageStack">
+              <div class="left-message-row">
+                <div class="left-message">
+                  {{rightMessage.message}}
+                </div>
+                <div class="left-message-time">
+                  {{rightMessage.time | date:"yyyy/MM/dd HH:mm:ss"}}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="right-box">
+          <div class="right-message-box">
+            <ng-container *ngFor="let rightMessage of rightMessageStack">
+              <div class="right-message-row">
+                <div class="right-message">
+                  {{rightMessage.message}}
+                </div>
+                <div class="right-message-time">
+                  {{rightMessage.time | date:"yyyy/MM/dd HH:mm:ss"}}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-box">
+      <div class="form">
+        <input id="contentForm" type="text" [formControl]="contentForm">
+        <button id="contentFormButton" (click)="onSendMessage()">送信</button>
+      </div>
+    </div>
+  </div>
+</div>
