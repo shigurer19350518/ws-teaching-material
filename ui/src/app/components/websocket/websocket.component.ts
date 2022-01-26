@@ -32,7 +32,6 @@ export class WebsocketComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.websocket.init()
     this.eventsSubscription = this.websocket.events$.subscribe((data) => {
       this.leftMessageStack.push({
         time: new Date(),

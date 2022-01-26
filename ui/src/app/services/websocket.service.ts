@@ -11,6 +11,10 @@ export class WebsocketService<T = any> {
   private eventsSubject: Subject<T> = new Subject()
   private isConnectSubject = new BehaviorSubject(false);
 
+  constructor(){
+    this.init()
+  }
+
   get events$() {
     return this.eventsSubject.asObservable()
   }
@@ -19,7 +23,7 @@ export class WebsocketService<T = any> {
     return this.isConnectSubject.asObservable()
   }
 
-  init() {
+  private init() {
     this.ioClient.on('connect', () => {
       this.isConnectSubject.next(true)
     })
